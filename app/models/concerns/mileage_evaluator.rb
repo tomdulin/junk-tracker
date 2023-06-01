@@ -7,7 +7,6 @@ module MileageEvaluator
       "#{evaluate_mileage} (#{self.mileage.to_s(:delimited)})"
     end
 
-
     def evaluate_mileage
       case self.mileage
       when 0..20000
