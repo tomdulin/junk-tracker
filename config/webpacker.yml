@@ -19,6 +19,7 @@ default: &default
   extract_css: false
 
   static_assets_extensions:
+    - .jsx
     - .jpg
     - .jpeg
     - .png
@@ -33,7 +34,6 @@ default: &default
     - .woff2
 
   extensions:
-    - .jsx
     - .mjs
     - .js
     - .sass

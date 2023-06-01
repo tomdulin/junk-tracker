@@ -2,12 +2,10 @@ require "rails_helper"
 
 describe "AdBuilder" do
   describe "#create_ad" do
-    let(:vehicle) { Vehicle.new }
+    let(:vehicle) { FactoryBot.create(:vehicle, :for_coupe)  }
 
     it "includes Vehicle's nickname" do
-      vehicle.nickname = "some nickname"
-
-      expect(AdBuilder.create_ad(vehicle)).to include("some nickname")
+      expect(AdBuilder.create_ad(vehicle)).to include(vehicle.nickname)
     end
 
     # The following specs are expected to fail. Please make them pass and 
@@ -17,63 +15,68 @@ describe "AdBuilder" do
     # functionality captured by these specs are maintained.)
 
     describe "when vehicle is a Sedan" do
+      let(:vehicle) { FactoryBot.create(:vehicle, :for_sedan)  }
       it "looks like this" do
         expect(AdBuilder.create_ad(vehicle)).to eql(<<~AD)
-          2020 Honda Civic
-          Registration number: 415Hn3JTu7obqNj151gmuscoq0kWCy
-          Mileage: Low (5,134)
-          Engine: Works
+          #{vehicle.nickname}
+          Registration number: #{vehicle.registration}
+          Mileage: #{vehicle.mileage_to_s}
+          Engine: #{vehicle.engine_status}
         AD
       end
     end
 
     describe "when vehicle is a Coupe" do
+      let(:vehicle) { FactoryBot.create(:vehicle, :for_coupe)  }
       it "looks like this" do
         expect(AdBuilder.create_ad(vehicle)).to eql(<<~AD)
-          2021 Honda Civic
-          Registration number: 415Hn3JTu7obqNj151gmuscoq0kWCy
-          Mileage: Medium (21,980)
-          Engine: Works
+          #{vehicle.nickname}
+          Registration number: #{vehicle.registration}
+          Mileage: #{vehicle.mileage_to_s}
+          Engine: #{vehicle.engine_status}
         AD
       end
     end
 
     describe "when vehicle is a Mini-Van" do
+      let(:vehicle) { FactoryBot.create(:vehicle, :for_mini_van)  }
       it "looks like this" do
         expect(AdBuilder.create_ad(vehicle)).to eql(<<~AD)
           Looking for a Mini-Van? Look no further!
 
-          ~~~ 2009 Dodge Caravan ~~~
+          ~~~ #{vehicle.nickname} ~~~
 
-          Registration number: 415Hn3JTu7obqNj151gmuscoq0kWCy
-          Mileage: Low (5,134)
-          Engine: Works
-          Regular Doors: 2
-          Sliding Doors: 2
+          Registration number: #{vehicle.registration}
+          Mileage: #{vehicle.mileage_to_s}
+          Engine: #{vehicle.engine_status}
+          Regular Doors: #{vehicle.vehicleable.doors}
+          Sliding Doors: #{vehicle.vehicleable.sliding_doors}
         AD
       end
     end
 
     describe "when vehicle is a Motorcycle" do
+      let(:vehicle) { FactoryBot.create(:vehicle, :for_motorcycle)  }
       it "looks like this" do
         expect(AdBuilder.create_ad(vehicle)).to eql(<<~AD)
           ~~~ Motorcycle for Sale ~~~
 
-          2019 Ducati Sportbike Motorcycle PANIGALE V4 SPECIALE
+          #{vehicle.nickname}
 
           Registration number: 
-          415Hn3JTu7obqNj151gmuscoq0kWCy
+          #{vehicle.registration}
 
           Mileage: 
-          High (105,777)
+          #{vehicle.mileage_to_s}
 
           Engine: 
-          Works
+          #{vehicle.engine_status}
 
           Seat: 
-          Fixable 
+          #{vehicle.vehicleable.seat_status}
         AD
       end
     end
+
   end
 end
