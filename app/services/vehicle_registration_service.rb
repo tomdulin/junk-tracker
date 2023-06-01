@@ -8,7 +8,6 @@ class VehicleRegistrationService
     # Pretend we're making a request to an external service :)
     sleep(3)
 
-    charset = Array('A'..'Z') + Array('a'..'z') + Array(0..9)
-    Array.new(30) { charset.sample }.join
+    SecureRandom.alphanumeric(30)
   end
 end
